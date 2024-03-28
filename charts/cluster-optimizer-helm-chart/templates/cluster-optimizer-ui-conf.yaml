@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "optimizer-ui.confName" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "optimizer-chart.labels" . | nindent 4 }}
 data:

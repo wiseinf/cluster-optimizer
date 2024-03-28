@@ -4,6 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "optimizerDB.svcName" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   ports:
     - port: 3306

@@ -3,6 +3,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: {{ include "optimizer.svcName" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "optimizer-chart.labels" . | nindent 4 }}
 spec:

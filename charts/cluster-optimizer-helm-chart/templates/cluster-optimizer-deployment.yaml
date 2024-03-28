@@ -6,6 +6,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: {{ include "optimizer-chart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "optimizer-chart.labels" . | nindent 4 }}
 spec:
