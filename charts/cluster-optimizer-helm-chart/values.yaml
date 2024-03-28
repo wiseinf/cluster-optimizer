@@ -57,7 +57,7 @@ livenessProbe:
       port: 80
   optimizer:
     httpGet:
-      path: /
+      path: /healthz
       port: 7070
 readinessProbe:
   ui:
@@ -66,7 +66,7 @@ readinessProbe:
       port: 80
   optimizer:
     httpGet:
-      path: /
+      path: /healthz
       port: 7070
 
 nameOverride: ""
