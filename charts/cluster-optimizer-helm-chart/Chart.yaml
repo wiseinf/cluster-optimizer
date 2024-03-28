@@ -1,0 +1,7 @@
+apiVersion: v2
+name: cluster-optimizer
+icon: https://www.wiseinf.com/favicons/favicon.ico
+description: A Helm chart for cluster optimizer
+type: application
+version: 0.1.0
+appVersion: "1.1.0"

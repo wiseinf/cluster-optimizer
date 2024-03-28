@@ -1,0 +1,65 @@
+---
+{{- if .Values.optimizedb.create }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "optimizerDB.name" .}}
+  labels:
+    {{- include "optimizedb.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "optimizedb.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "optimizedb.labels" . | nindent 8 }}
+        {{- with .Values.optimizedb.PodLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- if and .Values.optimizedb.hostNetwork }}
+      hostNetwork: true
+      {{- end }}
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: {{ .Values.optimizedb.rootPassword }}
+        ports:
+          - containerPort: 3306
+            protocol: TCP
+#        resources:
+#            requests:
+#              cpu: 100m
+#              memory: 200M
+#            limits:
+#              cpu: 800m
+#              memory: 1G
+        volumeMounts:
+          - name: optimizedb-persistent-storage
+            mountPath: /var/lib/mysql
+      {{- if and .Values.optimizedb.hostname (ne .Values.optimizedb.hostname "") }}      
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                  - {{ .Values.optimizedb.hostname }}
+      {{- end }}
+      volumes:
+        - name: optimizedb-persistent-storage
+          persistentVolumeClaim:
+            claimName: {{ include "optimizerDB.pvcName" . }}
+{{- end }}

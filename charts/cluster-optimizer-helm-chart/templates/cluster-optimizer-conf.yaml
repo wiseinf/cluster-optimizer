@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "optimizer.confName" . }}
+  labels:
+    {{- include "optimizer-chart.labels" . | nindent 4 }}
+data:
+  cluster-optimizer.yaml: |-
+    server:
+      port: 7070
+    engine:
+      maxQueryDuration: 1h
+    optconf:
+      dataSource:
+        name: "{{ include "optimizedb.conf.datasource" .}}"
+        maxOpenConns: 10
+    optdata:
+      dataSource:
+        name: "{{ include "optimizedb.data.datasource" .}}"
+        maxOpenConns: 10

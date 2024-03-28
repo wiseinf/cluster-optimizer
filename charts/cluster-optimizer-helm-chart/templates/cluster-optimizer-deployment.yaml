@@ -1,0 +1,119 @@
+
+
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ include "optimizer-chart.fullname" . }}
+  labels:
+    {{- include "optimizer-chart.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      {{- include "optimizer-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "optimizer-chart.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      dnsPolicy: ClusterFirstWithHostNet
+      securityContext:
+        runAsUser: 0
+      containers:
+        - name: optimizer-ui
+          image: {{ .Values.images.ui.repository }}:{{ .Values.images.ui.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.images.ui.pullPolicy }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe.ui | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe.ui | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources.ui | nindent 12 }}
+          volumeMounts:
+            - name: optimizer-nginx-config
+              mountPath: /etc/nginx/conf.d
+          ports:
+            - containerPort: 80
+              protocol: TCP
+#          resources:
+#            requests:
+#              cpu: 100m
+#              memory: 200M
+#            limits:
+#              cpu: 1000m
+#              memory: 1G
+        - name: optimizer
+          image: {{ .Values.images.optimizer.repository }}:{{ .Values.images.optimizer.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.images.optimizer.pullPolicy }}
+          command:
+            - "/wiseinf/optimizer"
+            {{- with .Values.commandArguments }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          #  - "--features=APIServer"
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe.optimizer | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe.optimizer | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources.optimizer | nindent 12 }}
+          volumeMounts:
+            - name: optimizer-data-volume
+              mountPath: /wiseinf/data
+            - name: optimizer-logs-volume
+              mountPath: /wiseinf/logs
+            - name: optimizer-conf-volume
+              mountPath: /wiseinf/conf
+          ports:
+            - containerPort: 7070
+              protocol: TCP
+      volumes:
+        # Config for optimizer-ui
+        - name: optimizer-nginx-config
+          configMap:
+            name: {{ include "optimizer-ui.confName" . }}
+        # Configs for optimizer
+        - name: optimizer-conf-volume
+          configMap:
+            name: {{ include "optimizer.confName" . }}
+        - name: optimizer-data-volume
+          hostPath:
+            path: /optimizer/data
+            type: DirectoryOrCreate
+        - name: optimizer-logs-volume
+          hostPath:
+            path: /optimizer/logs
+            type: DirectoryOrCreate
+
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: optimizer
+#   namespace: wiseinf-system
+# spec:
+#   rules:
+#     - host: optimizer.{your domain name}
+#       http:
+#         paths:
+#           - backend:
+#               service:
+#                 name: optimizer
+#                 port:
+#                   number: 80
+#             path: /
+#             pathType: ImplementationSpecific

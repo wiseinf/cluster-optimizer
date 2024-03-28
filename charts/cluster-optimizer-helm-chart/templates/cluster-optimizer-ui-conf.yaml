@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "optimizer-ui.confName" . }}
+  labels:
+    {{- include "optimizer-chart.labels" . | nindent 4 }}
+data:
+  default.conf: |-
+{{ .Files.Get "nginx-default.conf" | indent 4 }}

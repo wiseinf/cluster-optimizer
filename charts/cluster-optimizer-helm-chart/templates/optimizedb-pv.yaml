@@ -1,0 +1,21 @@
+{{- if .Values.optimizedb.create }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "optimizerDB.pvName" . }}
+  annotations:
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+    meta.helm.sh/release-name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/optimizedb/"
+{{- end }}

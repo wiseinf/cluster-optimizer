@@ -1,0 +1,14 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "optimizer.svcName" . }}
+  labels:
+    {{- include "optimizer-chart.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    {{- include "optimizer-chart.selectorLabels" . | nindent 4 }}
+  type: ClusterIP
