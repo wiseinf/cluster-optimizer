@@ -54,20 +54,20 @@ livenessProbe:
   ui:
     httpGet:
       path: /
-      port: http
+      port: 80
   optimizer:
     httpGet:
       path: /
-      port: http
+      port: 7070
 readinessProbe:
   ui:
     httpGet:
       path: /
-      port: http
+      port: 80
   optimizer:
     httpGet:
       path: /
-      port: http
+      port: 7070
 
 nameOverride: ""
 fullnameOverride: ""
