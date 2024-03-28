@@ -47,7 +47,7 @@ spec:
 #              memory: 1G
         volumeMounts:
           - name: optimizedb-persistent-storage
-            mountPath: /var/lib/mysql
+            mountPath: /var/lib/mysql-{{ include "optimizerDB.name" .}}
       {{- if and .Values.optimizedb.hostname (ne .Values.optimizedb.hostname "") }}      
         affinity:
           nodeAffinity:
