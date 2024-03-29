@@ -3,6 +3,17 @@ entries:
   cluster-optimizer:
   - apiVersion: v2
     appVersion: 1.1.0
+    created: "2024-03-29T02:07:37.988675895Z"
+    description: A Helm chart for cluster optimizer
+    digest: 5a10f4945911615f00649cd8730fde435f3d9f80799290107c5b529c35242d73
+    icon: https://www.wiseinf.com/favicons/favicon.ico
+    name: cluster-optimizer
+    type: application
+    urls:
+    - https://github.com/wiseinf/cluster-optimizer/releases/download/cluster-optimizer-0.1.3/cluster-optimizer-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.1.0
     created: "2024-03-28T13:21:32.674048705Z"
     description: A Helm chart for cluster optimizer
     digest: e8e1a3331fbf78370f314fe39bde73aa36cb5ab810e1ac95b7da198e86b7fd8e
@@ -34,4 +45,4 @@ entries:
     urls:
     - https://github.com/wiseinf/cluster-optimizer/releases/download/cluster-optimizer-0.1.0/cluster-optimizer-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-28T13:21:32.674082298Z"
+generated: "2024-03-29T02:07:37.988695652Z"
