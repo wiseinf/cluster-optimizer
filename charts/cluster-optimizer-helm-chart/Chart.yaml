@@ -3,5 +3,5 @@ name: cluster-optimizer
 icon: https://www.wiseinf.com/favicons/favicon.ico
 description: A Helm chart for cluster optimizer
 type: application
-version: 0.1.2
+version: 0.1.3
 appVersion: "1.1.0"

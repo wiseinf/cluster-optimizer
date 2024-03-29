@@ -3,10 +3,11 @@
 # Default values for optimize db
 optimizedb:
   create: true
-  # following parameters 'rootPassword', 'hostNetwork' and 'host' only apply for create = true
+  # following parameters 'rootPassword', 'hostNetwork', 'host' and 'size' only apply for create = true
   rootPassword: optimizer
   hostNetwork: false
   host: ""              # specify the host where the optimizedb is running, host MUST be a kubernetes node name.
+  #size: 2Gi           # should specify db size, default value is 2Gi
   conf: 
   #  dbHost: optimizer.mysql # valid when create is false
     schema: optconf

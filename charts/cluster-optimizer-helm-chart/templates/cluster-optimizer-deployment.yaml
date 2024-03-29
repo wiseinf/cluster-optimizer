@@ -93,11 +93,11 @@ spec:
             name: {{ include "optimizer.confName" . }}
         - name: optimizer-data-volume
           hostPath:
-            path: /optimizer/data
+            path: /optimizer/data-{{ include "optimizer.confName" . }}
             type: DirectoryOrCreate
         - name: optimizer-logs-volume
           hostPath:
-            path: /optimizer/logs
+            path: /optimizer/logs-{{ include "optimizer.confName" . }}
             type: DirectoryOrCreate
 
 # ---

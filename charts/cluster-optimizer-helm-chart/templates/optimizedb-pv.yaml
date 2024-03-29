@@ -14,9 +14,9 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 2Gi
+    storage: {{ default "2Gi" .Values.optimizedb.size }}
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/optimizedb/"
+    path: "/mnt/optimizedb-{{ include "optimizer-chart.fullname" . }}"
 {{- end }}
