@@ -15,8 +15,30 @@ data:
     optconf:
       dataSource:
         name: "{{ include "optimizedb.conf.datasource" .}}"
-        maxOpenConns: 10
+        maxOpenConns: {{ include "optimizedb.conf.datasource.maxOpenConns" . }}
     optdata:
       dataSource:
         name: "{{ include "optimizedb.data.datasource" .}}"
-        maxOpenConns: 10
+        maxOpenConns: {{ include "optimizedb.data.datasource.maxOpenConns" . }}
+    {{- with .Values.optimizedb.user }}
+    user:
+      dataSource:
+        name: "{{ include "optimizedb.user.datasource" .}}"
+        maxOpenConns: {{ include "optimizedb.user.datasource.maxOpenConns" . }}
+    {{- end }}
+    {{- with .Values.optimize }}
+    optimize:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}   
+    {{- with .Values.sms }}
+    sms:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.email }}
+    email:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.license }}
+    license:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}

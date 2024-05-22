@@ -50,13 +50,6 @@ spec:
           ports:
             - containerPort: 80
               protocol: TCP
-#          resources:
-#            requests:
-#              cpu: 100m
-#              memory: 200M
-#            limits:
-#              cpu: 1000m
-#              memory: 1G
         - name: optimizer
           image: {{ .Values.images.optimizer.repository }}:{{ .Values.images.optimizer.tag | default .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.images.optimizer.pullPolicy }}
@@ -65,7 +58,6 @@ spec:
             {{- with .Values.commandArguments }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          #  - "--features=APIServer"
           livenessProbe:
             {{- toYaml .Values.livenessProbe.optimizer | nindent 12 }}
           readinessProbe:
@@ -99,22 +91,3 @@ spec:
           hostPath:
             path: /optimizer/logs-{{ include "optimizer.confName" . }}
             type: DirectoryOrCreate
-
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: optimizer
-#   namespace: wiseinf-system
-# spec:
-#   rules:
-#     - host: optimizer.{your domain name}
-#       http:
-#         paths:
-#           - backend:
-#               service:
-#                 name: optimizer
-#                 port:
-#                   number: 80
-#             path: /
-#             pathType: ImplementationSpecific

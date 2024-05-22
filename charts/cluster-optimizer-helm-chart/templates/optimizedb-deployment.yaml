@@ -38,17 +38,12 @@ spec:
         ports:
           - containerPort: 3306
             protocol: TCP
-#        resources:
-#            requests:
-#              cpu: 100m
-#              memory: 200M
-#            limits:
-#              cpu: 800m
-#              memory: 1G
+        resources:
+          {{- toYaml .Values.resources.mysql | nindent 12 }}
         volumeMounts:
           - name: optimizedb-persistent-storage
             mountPath: /var/lib/mysql
-      {{- if and .Values.optimizedb.hostname (ne .Values.optimizedb.hostname "") }}      
+      {{- if and .Values.optimizedb.hostname (ne .Values.optimizedb.hostname "") }}
         affinity:
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:

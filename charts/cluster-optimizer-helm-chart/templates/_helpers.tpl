@@ -118,6 +118,11 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s:%s@tcp(%s:%s)/%s?createDatabaseIfNotExist=true&charset=utf8mb4&parseTime=true&loc=Local" $name $password $dbName $port $schema -}}
 {{- end }}
 
+{{- define "optimizedb.conf.datasource.maxOpenConns" -}}
+{{- $maxOpenConns := default 10 .Values.optimizedb.conf.maxOpenConns }}
+{{- printf "%d" $maxOpenConns -}}
+{{- end }}
+
 {{- define "optimizedb.data.datasource" -}}
 {{- $name := default "optimizer" .Values.optimizedb.data.user }}
 {{- $password := default "Optimizer~" .Values.optimizedb.data.password }}
@@ -125,6 +130,25 @@ If release name contains chart name it will be used as a full name.
 {{- $port := default "3306" .Values.optimizedb.data.port }}
 {{- $schema := default "optimizer" .Values.optimizedb.data.schema }}
 {{- printf "%s:%s@tcp(%s:%s)/%s?createDatabaseIfNotExist=true&charset=utf8mb4&parseTime=true&loc=Local" $name $password $dbName $port $schema -}}
+{{- end }}
+
+{{- define "optimizedb.data.datasource.maxOpenConns" -}}
+{{- $maxOpenConns := default 20 .Values.optimizedb.data.maxOpenConns }}
+{{- printf "%d" $maxOpenConns -}}
+{{- end }}
+
+{{- define "optimizedb.user.datasource" -}}
+{{- $name := default "optimizer" .Values.optimizedb.data.user }}
+{{- $password := default "Optimizer~" .Values.optimizedb.data.password }}
+{{- $dbName := include "optimizedb.data.dbName" . }}
+{{- $port := default "3306" .Values.optimizedb.data.port }}
+{{- $schema := default "optimizer" .Values.optimizedb.data.schema }}
+{{- printf "%s:%s@tcp(%s:%s)/%s?createDatabaseIfNotExist=true&charset=utf8mb4&parseTime=true&loc=Local" $name $password $dbName $port $schema -}}
+{{- end }}
+
+{{- define "optimizedb.user.datasource.maxOpenConns" -}}
+{{- $maxOpenConns := default 10 .Values.optimizedb.user.maxOpenConns }}
+{{- printf "%d" $maxOpenConns -}}
 {{- end }}
 
 {{- define "optimizedb.name" -}}

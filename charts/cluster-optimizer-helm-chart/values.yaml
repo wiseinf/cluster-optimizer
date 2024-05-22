@@ -14,23 +14,32 @@ optimizedb:
     port: "3306"
     user: root
     password: optimizer
+    #maxOpenConns: 10 # should specify maxOpenConns, default value is 10
   data:
   #  dbHost: optimizer.mysql # valid when create is false
     schema: optdata
     port: "3306"
     user: root
     password: optimizer
- 
+    #maxOpenConns: 10 # should specify maxOpenConns, default value is 10 
+  # user schema is requried for business version
+  # user:
+  #   schema: user
+  #   port: "3306"
+  #   user: root
+  #   password: optimizer
+  #   maxOpenConns: 10
+
 # Default values for optimize deployment.
 images:
   ui: 
     repository: wiseinf/optimizer-ui
     pullPolicy: IfNotPresent
-    tag: "1.1.0"
+    tag: "1.2.0"
   optimizer:
     repository: wiseinf/optimizer
     pullPolicy: IfNotPresent
-    tag: "1.1.0"
+    tag: "1.2.0"
 
 # Specify extra command arguments.
 commandArguments:
@@ -42,7 +51,7 @@ commandArguments:
 resources: 
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. 
-  ui: {}
+  # ui: {}
   optimizer: 
     requests:
       cpu: 100m
@@ -50,6 +59,8 @@ resources:
     limits:
       cpu: 1000m
       memory: 1G
+  # mysql resource only take affect when optimizedb.create is true
+  # mysql: {}
 
 livenessProbe:
   ui:
@@ -116,9 +127,9 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: []
-  #  - secretName: chart-example-tls
+  #  - secretName: cluster-optimzier-example-tls
   #    hosts:
-  #      - chart-example.local
+  #      - cluster-optimzier-example.local
 
 # Additional volumes on the output Deployment definition.
 volumes: []
@@ -132,3 +143,33 @@ volumeMounts: []
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
+
+#License for business version
+# license:
+#   certificate:  certificate data 
+#   signature: signature data
+
+# configure sms and email for security code and so on. Only avavaliable for business version
+# sms:
+#   enabled: true
+#   provider: ""
+#   ...
+# email:
+#   enabled: true
+#   provider: ""
+#   template: templates/email_code.tpl
+#   ...
+
+# configure optimize engine
+# optimize:
+#   defaultCron: "0 0 1 * * ?"
+#   strategyConfigs:
+#     "OOM": 
+#       enabled: false
+#     "Resource Recommendation":
+#       enabled: false
+#     "Low Utilization Node":
+#       enabled: false
+#     "No Quota":
+#       enabled: false
+#   enabled: true

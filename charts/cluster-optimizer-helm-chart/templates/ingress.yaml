@@ -50,11 +50,11 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ include "optimizer.svcName" . }}
+                name: {{ include "optimizer.svcName" $ }}
                 port:
                   number: {{ $svcPort }}
               {{- else }}
-              serviceName: {{ include "optimizer.svcName" . }}
+              serviceName: {{ include "optimizer.svcName" $ }}
               servicePort: {{ $svcPort }}
               {{- end }}
           {{- end }}
