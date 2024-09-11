@@ -2,6 +2,7 @@
 
 # Default values for optimize db
 optimizedb:
+  # specify create: false when you want to use an existing optimizedb
   create: true
   # following parameters 'rootPassword', 'hostNetwork', 'host' and 'size' only apply for create = true
   rootPassword: optimizer
@@ -35,11 +36,11 @@ images:
   ui: 
     repository: wiseinf/optimizer-ui
     pullPolicy: IfNotPresent
-    tag: "1.3.0"
+    tag: "1.3.1"
   optimizer:
     repository: wiseinf/optimizer
     pullPolicy: IfNotPresent
-    tag: "1.3.0"
+    tag: "1.3.1"
 
 # Specify extra command arguments.
 commandArguments:
@@ -54,11 +55,11 @@ resources:
   # ui: {}
   optimizer: 
     requests:
-      cpu: 100m
-      memory: 200M
+      cpu: 200m
+      memory: 500M
     limits:
       cpu: 1000m
-      memory: 1G
+      memory: 2G
   # mysql resource only take affect when optimizedb.create is true
   # mysql: {}
 
@@ -146,6 +147,9 @@ volumeMounts: []
 
 # license for business version
 # license:
+#   accessKeyId:  {access key id from https://portal.wiseinf.com}
+#   accessKeySecret: {access key secret associate with access key id}
+#   or
 #   certificate:  certificate data 
 #   signature: signature data
 
